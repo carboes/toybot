@@ -1,31 +1,7 @@
 import assert from 'assert'
 import ToyBot from '../lib/toybot.js'
 
-describe('ToyBot', () => {
-
-	it('a', done => {
-		var toyBot = new ToyBot('0,0,NORTH')
-		toyBot.move()
-		assert.equal(toyBot.toString(),'0,1,NORTH')
-		done()
-	})
-
-	it('b', done => {
-		var toyBot = new ToyBot('0,0,NORTH')
-		toyBot.left()
-		assert.equal(toyBot.toString(),'0,0,WEST')
-		done()
-	})
-
-	it('c', done => {
-		var toyBot = new ToyBot('1,2,EAST')
-		toyBot.move()
-		toyBot.move()
-		toyBot.left()
-		toyBot.move()
-		assert.equal(toyBot.toString(),'3,3,NORTH')
-		done()
-	})
+describe('ToyBot tests', () => {
 
 	it('Rotate left', done => {
 		var toyBot = new ToyBot('1,2,EAST')
@@ -36,15 +12,15 @@ describe('ToyBot', () => {
 
 	it('Rotate right', done => {
 		var toyBot = new ToyBot('1,2,EAST')
-		toyBot.left()
+		toyBot.right()
 		assert.equal(toyBot.toString(),'1,2,SOUTH')
 		done()
 	})
 
-	it('Rotate right', done => {
+	it('Move', done => {
 		var toyBot = new ToyBot('1,2,EAST')
 		toyBot.move()
-		assert.equal(toyBot.toString(),'1,3,EAST')
+		assert.equal(toyBot.toString(),'2,2,EAST')
 		done()
 	})
 
@@ -75,5 +51,72 @@ describe('ToyBot', () => {
 		assert.equal(toyBot.toString(),'0,5,WEST')
 		done()
 	})
-	
+
+
+    it('First command not placed', done => {
+        var error
+        try {
+            ToyBot.processCommand('TEST', null)
+        }
+        catch (err) {
+            error = err
+        }
+        assert.equal(error, 'First command must be: PLACE x,y,DIRECTION')
+        done()
+    })
+
+    it('First command placed', done => {
+        var toyBot = ToyBot.processCommand('PLACE 1,2,NORTH', null)
+        assert.equal(toyBot.toString(),'1,2,NORTH')
+        done()
+    })
+
+    it('First command placed out of bounds', done => {
+        var error
+        try {
+            ToyBot.processCommand('PLACE 1,6,NORTH', null)
+        }
+        catch (err) {
+            error = err
+        }
+        assert.equal(error, 'Invalid y co-ordinate.  Must be an integer between 0 and 5.')
+        done()
+    })
+
+    it('Invalid place direction', done => {
+        var error
+        try {
+            ToyBot.processCommand('PLACE 1,3,TEST', null)
+        }
+        catch (err) {
+            error = err
+        }
+        assert.equal(error, 'Invalid direction: Must be one of NORTH, SOUTH, EAST, WEST')
+        done()
+    })
+
+    it('Integration a', done => {
+        var toyBot = new ToyBot('0,0,NORTH')
+        toyBot.move()
+        assert.equal(toyBot.toString(),'0,1,NORTH')
+        done()
+    })
+
+    it('Integration b', done => {
+        var toyBot = new ToyBot('0,0,NORTH')
+        toyBot.left()
+        assert.equal(toyBot.toString(),'0,0,WEST')
+        done()
+    })
+
+    it('Integration c', done => {
+        var toyBot = new ToyBot('1,2,EAST')
+        toyBot.move()
+        toyBot.move()
+        toyBot.left()
+        toyBot.move()
+        assert.equal(toyBot.toString(),'3,3,NORTH')
+        done()
+    })
+
 })
