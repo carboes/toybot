@@ -7,6 +7,10 @@
     "start": "babel-node lib/index.js",
     "test": "mocha --compilers js:babel-register"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/carboes/toybot.git"
+  },
   "author": "Carl Peterken <carl.peterken@gmail.com>",
   "license": "ISC",
   "devDependencies": {
